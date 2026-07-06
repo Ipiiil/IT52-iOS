@@ -9,22 +9,12 @@ import SwiftUI
 struct HomeView: View {
     
     var body: some View {
-        
-        ScrollView{
-            
-            //выстраиваем вертикально
-            VStack(alignment: .leading, spacing: AppTheme.largeSpacing){
                 
-                Text("Главная")
-                    .font(AppFonts.largeTitle)
-                    .foregroundStyle(AppColors.textPrimary)
-            }
-            .padding(.horizontal, AppTheme.horizontalPadding)
-            .padding(.top)
+        NavigationStack {
             
+            Text("Главная")
+                .navigationTitle("IT52")
         }
-        .background(AppColors.background)
-        
     }
 }
 
