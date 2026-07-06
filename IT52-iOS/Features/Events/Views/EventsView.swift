@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct EventsView: View {
+    
     var body: some View {
-        Text("Мероприятия").navigationTitle("Мероприятия")
+        
+        Text("Мероприятия")
+            .navigationTitle("Мероприятия")
     }
 }
 

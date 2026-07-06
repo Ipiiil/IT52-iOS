@@ -38,6 +38,7 @@ struct TabBarView: View {
                 Label("Профиль", systemImage: "person.fill")
             }
         }
+        .tint(AppColors.accent) // переопределение глобального accent для конкретного представления элементов
     }
 }
 

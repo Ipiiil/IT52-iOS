@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct PlannerView: View {
+    
     var body: some View {
-        Text("Планы").navigationTitle("Планы")
+        
+        Text("Планы")
+            .navigationTitle("Планы")
     }
 }
 

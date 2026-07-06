@@ -10,7 +10,21 @@ struct HomeView: View {
     
     var body: some View {
         
-        Text("Главная").navigationTitle("IT52")
+        ScrollView{
+            
+            //выстраиваем вертикально
+            VStack(alignment: .leading, spacing: AppTheme.largeSpacing){
+                
+                Text("Главная")
+                    .font(AppFonts.largeTitle)
+                    .foregroundStyle(AppColors.textPrimary)
+            }
+            .padding(.horizontal, AppTheme.horizontalPadding)
+            .padding(.top)
+            
+        }
+        .background(AppColors.background)
+        
     }
 }
 
