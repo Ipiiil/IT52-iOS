@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		E6E5CB922FFBF0A7004CE0C2 /* IT52-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "IT52-iOS.app"; path = "/Users/polly/Desktop/IT52-iOS/build/Debug-iphoneos/IT52-iOS.app"; sourceTree = "<absolute>"; };
 		E6E5CBF42FFBFA23004CE0C2 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E6E5CBF52FFBFD0B004CE0C2 /* IT52-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IT52-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -35,6 +35,7 @@
 			children = (
 				E6E5CB942FFBF0A7004CE0C2 /* IT52-iOS */,
 				E6E5CBF42FFBFA23004CE0C2 /* .gitignore */,
+				E6E5CBF52FFBFD0B004CE0C2 /* IT52-iOS.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,7 +61,7 @@
 			packageProductDependencies = (
 			);
 			productName = "IT52-iOS";
-			productReference = E6E5CB922FFBF0A7004CE0C2 /* IT52-iOS.app */;
+			productReference = E6E5CBF52FFBFD0B004CE0C2 /* IT52-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
