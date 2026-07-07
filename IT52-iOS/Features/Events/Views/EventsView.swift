@@ -9,10 +9,42 @@ import SwiftUI
 
 struct EventsView: View {
     
+    @State private var searchText = ""
+    
+    private var filteredEvents: [Event] {
+        
+        if searchText.isEmpty {
+            
+            return MockData.events
+        }
+        
+        return MockData.events.filter {
+            $0.title.localizedCaseInsensitiveContains(searchText)
+        }
+    }
+    
     var body: some View {
         
-        Text("События")
+        NavigationStack {
+            
+            ScrollView {
+                
+                VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
+                    
+                    SearchBar(text: $searchText)
+                    
+                    Text("Все мероприятия")
+                        .font(AppFonts.headline)
+                    
+                    ForEach(filteredEvents) { event in
+                        
+                        EventCard(event: event)
+                    }
+                }
+                .padding()
+            }
             .navigationTitle("События")
+        }
     }
 }
 
