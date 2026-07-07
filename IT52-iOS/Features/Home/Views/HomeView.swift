@@ -40,28 +40,41 @@ struct HomeView: View {
                         
                         ForEach(upcomingEvents) { event in EventCard(event: event)}
                     }
-                    
-                    //популярные ( пока заглушка)
+                    //о сообществе
                     VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
                         
-                        Text("Популярные")
-                            .font(AppFonts.headline)
+                        SectionHeader(title: "О сообществе")
                         
-                        Text("Скоро появится...")
-                            .font(AppFonts.caption)
-                            .foregroundStyle(AppColors.textSecondary)
+                        Text("""
+                            it52 — это некоммерческое сообщество энтузиастов, которые думают, что могут сделать жизнь нижегородского айтишника немного лучше. Мы помогаем организовывать профильные мероприятия, ведём афишу событий, курируем несколько чатиков в телеграме и групп в соцсетях, и кажется, что у нас получается.
+                            """)
+                        .font(AppFonts.body)
+                        
                     }
                     
-                    //новости ( пока заглушка)
-                    VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
+                    //Контакты
+                    VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
                         
-                        Text("Новости")
-                            .font(AppFonts.headline)
+                        SectionHeader(title: "Контакты")
                         
-                        Text("Скоро появится...")
-                            .font(AppFonts.caption)
-                            .foregroundStyle(AppColors.textSecondary)
+                        Link(destination: URL(string: "https://it52.info")!){
+                            Label("it52.info", systemImage: "globe")
+                        }
+                        
+                        Link(destination: URL(string: "https://github.com/NNRUG/it52-rails")!){
+                            Label("GitHub", systemImage: "link")
+                        }
+                        
+                        Link(destination: URL(string: "https://t.me/it52info")!){
+                            Label("Telegram", systemImage: "paperplane")
+                        }
+                        
+                        Link(destination: URL(string: "mailto:info@it52.info")!){
+                            Label("info@it52.info", systemImage: "envelope")
+                        }
+                        
                     }
+                    .font(AppFonts.body)
                    
                 }
                 .padding()
