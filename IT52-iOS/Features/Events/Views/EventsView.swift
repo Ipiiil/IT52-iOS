@@ -11,8 +11,8 @@ struct EventsView: View {
     
     var body: some View {
         
-        Text("Мероприятия")
-            .navigationTitle("Мероприятия")
+        Text("События")
+            .navigationTitle("События")
     }
 }
 

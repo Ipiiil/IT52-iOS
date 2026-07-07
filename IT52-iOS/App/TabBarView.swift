@@ -28,7 +28,7 @@ struct TabBarView: View {
                 EventsView()
             }
             .tabItem{
-                Label("События", systemImage: "tickets.fill")
+                Label("События", systemImage: "ticket.fill")
             }
             
             NavigationStack {
