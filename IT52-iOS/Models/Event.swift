@@ -19,6 +19,8 @@ struct Event: Identifiable {
     
     let location: String
     
+    let organized: String
+    
     let category: String
     
     let imageName: String?

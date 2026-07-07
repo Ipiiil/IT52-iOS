@@ -39,9 +39,17 @@ struct EventCard: View {
             
             HStack {
                 
-                Image(systemName: ",apping.and.ellipse")
+                Image(systemName: "mapping.and.ellipse")
                 
                 Text(event.location)
+            }
+            .font(AppFonts.caption)
+            
+            HStack {
+                
+                Image(systemName: "person.circle")
+                
+                Text(event.organized)
             }
             .font(AppFonts.caption)
             

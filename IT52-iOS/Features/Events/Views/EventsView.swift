@@ -33,7 +33,7 @@ struct EventsView: View {
                     
                     SearchBar(text: $searchText)
                     
-                    Text("Все мероприятия")
+                    Text("Все события")
                         .font(AppFonts.headline)
                     
                     ForEach(filteredEvents) { event in
@@ -44,7 +44,6 @@ struct EventsView: View {
                         } label: {
                             
                             EventCard(event: event)
-                            
                         }
                         .buttonStyle(.plain)
                     }

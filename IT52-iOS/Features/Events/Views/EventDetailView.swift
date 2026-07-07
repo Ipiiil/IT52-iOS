@@ -40,10 +40,17 @@ struct EventDetailView: View{
                     
                     HStack{
                         
-                        Image(systemName: "mappin.and.ellipse")
+                        Image(systemName: "mapping.and.ellipse")
                         
                         Text(event.location)
                         
+                    }
+                    
+                    HStack{
+                        
+                        Image(systemName: "person.circle")
+                        
+                        Text(event.organized)
                     }
                     
                     Text(event.description)
