@@ -34,7 +34,7 @@ enum MockData {
             category: "meetup",
             imageName: nil,
             isFavorite: false,
-            isRegistered: true
+            isRegistered: false
         ),
     ]
 }

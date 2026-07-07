@@ -9,13 +9,88 @@ import SwiftUI
 
 struct PlannerView: View {
     
-    var body: some View {
+    @State private var selectedDate = Date()
+    
+    //все мероприятия пользвоателя
+    private var myEvents: [Event] {
         
-        Text("Планы")
-            .navigationTitle("Планы")
+        MockData.events.filter { $0.isRegistered }
+    }
+    
+    //мероприятия выбранного дня
+    private var selectedDayEvents: [Event] {
+        
+        myEvents.filter {
+            Calendar.current.isDate(
+                $0.date,
+                inSameDayAs: selectedDate
+            )
+        }
+    }
+
+    var body: some View {
+
+        NavigationStack {
+
+            ScrollView {
+
+                VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
+
+                    DatePicker(
+                        "Выберите дату",
+                        selection: $selectedDate,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+
+                    
+                    VStack(alignment: .leading,
+                           spacing: AppTheme.mediumSpacing) {
+
+
+                        Text("Мои мероприятия (\(myEvents.count))")
+                            .font(AppFonts.headline)
+
+                        if selectedDayEvents.isEmpty {
+
+                            Text("У вас пока нет мероприятий")
+                                .font(AppFonts.caption)
+                                .foregroundStyle(
+                                    AppColors.textSecondary
+                                )
+
+                        } else {
+
+                            ForEach(selectedDayEvents) { event in
+
+                                NavigationLink {
+                                    
+                                    EventDetailView(event: event)
+                                } label: {
+                                    
+                                    EventCard(event: event)
+                                }
+                                .buttonStyle(.plain)
+
+                            }
+
+                        }
+
+                    }
+
+
+                }
+                .padding()
+
+            }
+            .navigationTitle("Календарь")
+
+        }
+
     }
 }
 
+
 #Preview {
-    PlannerView()
+   PlannerView()
 }
