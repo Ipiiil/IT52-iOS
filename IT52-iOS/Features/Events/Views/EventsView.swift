@@ -38,7 +38,15 @@ struct EventsView: View {
                     
                     ForEach(filteredEvents) { event in
                         
-                        EventCard(event: event)
+                        NavigationLink {
+                            
+                            EventDetailView(event: event)
+                        } label: {
+                            
+                            EventCard(event: event)
+                            
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding()
