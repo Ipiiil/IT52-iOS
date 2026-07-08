@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlannerView: View {
     
+    @State private var appState = AppState()
     @State private var selectedDate = Date()
     
     //все мероприятия пользвоателя
@@ -29,40 +30,42 @@ struct PlannerView: View {
     }
 
     var body: some View {
-
+        
         NavigationStack {
-
-            ScrollView {
-
+            
+            if appState.isAuthorized {
+                
+                ScrollView {
+                
                 VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
-
+                    
                     DatePicker(
                         "Выберите дату",
                         selection: $selectedDate,
                         displayedComponents: .date
                     )
                     .datePickerStyle(.graphical)
-
+                    
                     
                     VStack(alignment: .leading,
                            spacing: AppTheme.mediumSpacing) {
-
-
+                        
+                        
                         Text("Мои мероприятия (\(myEvents.count))")
                             .font(AppFonts.headline)
-
+                        
                         if selectedDayEvents.isEmpty {
-
+                            
                             Text("У вас пока нет мероприятий")
                                 .font(AppFonts.caption)
                                 .foregroundStyle(
                                     AppColors.textSecondary
                                 )
-
+                            
                         } else {
-
+                            
                             ForEach(selectedDayEvents) { event in
-
+                                
                                 NavigationLink {
                                     
                                     EventDetailView(event: event)
@@ -71,23 +74,26 @@ struct PlannerView: View {
                                     EventCard(event: event)
                                 }
                                 .buttonStyle(.plain)
-
+                                
                             }
-
+                            
                         }
-
+                        
                     }
-
-
+                    
+                    
                 }
                 .padding()
-
+                
             }
-            .navigationTitle("Календарь")
-
+                .navigationTitle("Календарь")
+            
+        } else {
+            LoginRequiredView()
+                .navigationTitle("Календарь")
         }
-
     }
+}
 }
 
 
