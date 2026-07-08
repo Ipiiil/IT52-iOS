@@ -19,7 +19,7 @@ enum MockData {
             location: "г. Н.Новгород, ул. Карла Маркса, д. 44Б",
             organized: "",
             category: "courses",
-            imageName: nil,
+            imageURL: nil,
             isFavorite: true,
             isRegistered: true
         ),
@@ -32,7 +32,7 @@ enum MockData {
             location: "г. Н.Новгород, ул. Алексеевская, д 6/16",
             organized: "Анастасия Олеск",
             category: "meetup",
-            imageName: nil,
+            imageURL: nil,
             isFavorite: false,
             isRegistered: false
         ),

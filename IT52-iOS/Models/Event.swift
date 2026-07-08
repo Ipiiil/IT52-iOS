@@ -23,7 +23,7 @@ struct Event: Identifiable {
     
     let category: String
     
-    let imageName: String?
+    let imageURL: String?
     
     let isFavorite: Bool
     

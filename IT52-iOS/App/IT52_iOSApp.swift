@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct IT52_iOSApp: App {
+    
+    @State private var eventsViewModel = EventsViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(eventsViewModel)
         }
     }
 }

@@ -9,52 +9,89 @@ import SwiftUI
 
 struct EventsView: View {
     
+    @Environment(EventsViewModel.self) private var viewModel
     @State private var searchText = ""
+    
     
     private var filteredEvents: [Event] {
         
         if searchText.isEmpty {
             
-            return MockData.events
+            return viewModel.events
         }
         
-        return MockData.events.filter {
+        return viewModel.events.filter {
             $0.title.localizedCaseInsensitiveContains(searchText)
         }
     }
     
     var body: some View {
-        
-        NavigationStack {
             
             ScrollView {
                 
-                VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
-                    
-                    SearchBar(text: $searchText)
-                    
-                    Text("Все события")
-                        .font(AppFonts.headline)
-                    
-                    ForEach(filteredEvents) { event in
-                        
-                        NavigationLink {
+                LazyVStack(spacing: AppTheme.mediumSpacing) {
+
+                    if viewModel.isLoading {
+
+                        ProgressView()
+
+                    } else if let error = viewModel.errorMessage {
+
+                        VStack(spacing: 16) {
+
+                            Image(systemName: "wifi.exclamationmark")
+                                .font(.largeTitle)
+
+                            Text(error)
                             
-                            EventDetailView(event: event)
-                        } label: {
-                            
-                            EventCard(event: event)
+                            Button("Повторить") {
+                                Task {await viewModel.loadEvents()}
+                            }
+
                         }
-                        .buttonStyle(.plain)
+
+                    } else {
+
+                        ForEach(filteredEvents) { event in
+
+                            NavigationLink {
+
+                                EventDetailView(event: event)
+
+                            } label: {
+
+                                EventCard(event: event)
+
+                            }
+                            .buttonStyle(.plain)
+                            .task {
+                                if searchText.isEmpty{
+                                    await viewModel.loadMoreIfNeeded(currentItem: event)
+                                }
+                            }
+
+                        }
+                        if viewModel.isLoadingMore {
+                            ProgressView()
+                                .padding()
+                        }
+
                     }
+
                 }
                 .padding()
             }
-            .navigationTitle("События")
+            .searchable(text: $searchText, prompt: "Поиск событий")
+            .navigationTitle("Мероприятия")
+            .task {
+                await viewModel.loadEvents()
+            }
         }
     }
-}
 
 #Preview {
-    EventsView()
+    NavigationStack {
+        EventsView()
+            .environment(EventsViewModel())
+    }
 }
