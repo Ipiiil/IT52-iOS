@@ -9,9 +9,11 @@ import SwiftUI
 
 struct GuestProfileView: View {
     
+    @State private var showLogin = false
+    
     var body: some View {
         
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
             Spacer()
             
             Image(systemName: "person.crop.circle.badge.questionmark")
@@ -33,19 +35,25 @@ struct GuestProfileView: View {
             
             Button {
                 
+                showLogin = true
+                
             }label: {
                 Text("Войти")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             
-            Button("Зарегестрироваться") {
-                
+            NavigationLink("Нет аккаунта? Зарегистрируйся") {
+                RegisterView()
             }
+            
             Spacer()
         }
         .padding()
         .navigationTitle("Профиль")
+        .sheet(isPresented: $showLogin) {
+            LoginView()
+        }
     }
 }
 
