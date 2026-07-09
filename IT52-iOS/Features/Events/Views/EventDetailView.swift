@@ -10,6 +10,9 @@ struct EventDetailView: View{
     
     let event: Event
     
+    @Environment(AttendanceStore.self) private var attendanceStore
+    @Environment(AppState.self) private var appState
+    
     var body: some View {
         
         ScrollView {
@@ -53,6 +56,23 @@ struct EventDetailView: View{
                     
                 }
                 
+                if appState.isAuthorized {
+                    Button {
+                        attendanceStore.toggleAttendance(for: event)
+                    } label: {
+                        Label (
+                            attendanceStore.isAttending(event) ? "Иду" : "Отметить, что иду",
+                            systemImage: attendanceStore.isAttending(event) ? "checkmark.circle.fill" : "circle"
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(attendanceStore.isAttending(event) ? .green : AppColors.accent)
+                } else {
+                    Text("Войдите, чтобы отмечать события")
+                        .font(AppFonts.caption)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
                 /*Button{
                 } label: {
                     
@@ -109,3 +129,12 @@ struct EventDetailView: View{
                 }
         }
     }
+
+#Preview {
+    NavigationStack {
+        EventDetailView(event: MockData.events[0])
+            .environment(AttendanceStore())
+            .environment(AppState())
+        
+    }
+}

@@ -9,13 +9,17 @@ import SwiftUI
 
 struct PlannerView: View {
     
-    @State private var appState = AppState()
+    @Environment(EventsViewModel.self) private var eventsViewModel
+    @Environment(AttendanceStore.self) private var attendanceStore
+    @Environment(AppState.self) private var appState
     @State private var selectedDate = Date()
     
-    //все мероприятия пользвоателя
+    //все мероприятия отмеченные "иду"
     private var myEvents: [Event] {
         
-        MockData.events.filter { $0.isRegistered }
+        eventsViewModel.events
+            .filter {attendanceStore.isAttending($0)}
+            .sorted{ $0.date < $1.date}
     }
     
     //мероприятия выбранного дня
@@ -28,10 +32,13 @@ struct PlannerView: View {
             )
         }
     }
+    
+    private var datesWithEvents: Set<String> {
+        
+            Set(myEvents.map { EventsPlannerView.dayKey($0.date) })
+        }
 
     var body: some View {
-        
-        NavigationStack {
             
             if appState.isAuthorized {
                 
@@ -39,24 +46,26 @@ struct PlannerView: View {
                 
                 VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
                     
-                    DatePicker(
-                        "Выберите дату",
-                        selection: $selectedDate,
-                        displayedComponents: .date
+                    EventsPlannerView(
+                        selectedDate: $selectedDate,
+                        datesWithEvents: datesWithEvents
                     )
-                    .datePickerStyle(.graphical)
+                    .frame(height: 400)
+                    .padding(.top, AppTheme.largeSpacing)
+                    .padding(.bottom, AppTheme.largeSpacing)
+                        
                     
                     
                     VStack(alignment: .leading,
                            spacing: AppTheme.mediumSpacing) {
                         
                         
-                        Text("Мои мероприятия (\(myEvents.count))")
+                        Text("На \(selectedDate.formatted(date: .long, time: .omitted)) (\(selectedDayEvents.count))")
                             .font(AppFonts.headline)
                         
                         if selectedDayEvents.isEmpty {
                             
-                            Text("У вас пока нет мероприятий")
+                            Text("У вас пока нет мероприятий на этот день")
                                 .font(AppFonts.caption)
                                 .foregroundStyle(
                                     AppColors.textSecondary
@@ -94,9 +103,14 @@ struct PlannerView: View {
         }
     }
 }
-}
 
 
 #Preview {
-   PlannerView()
-}
+    NavigationStack {
+        PlannerView ()
+            .environment(EventsViewModel())
+            .environment(AttendanceStore())
+            .environment(AppState())
+        }
+    }
+
