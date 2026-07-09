@@ -39,7 +39,7 @@ struct EventCard: View {
             
             HStack {
                 
-                Image(systemName: "mapping.and.ellipse")
+                Image(systemName: "mappin.and.ellipse")
                 
                 Text(event.location)
             }
@@ -70,4 +70,45 @@ struct EventCard: View {
         .background(AppColors.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppTheme.cornerRadius))
     }
-}
+    
+    @ViewBuilder
+        private var eventImage: some View {
+
+            if let imageURL = event.imageURL, let url = URL(string: imageURL) {
+
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+
+                    case .failure:
+                        placeholderImage
+
+                    case .empty:
+                        ZStack {
+                            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                                .fill(AppColors.cardBackground)
+                            ProgressView()
+                        }
+
+                    @unknown default:
+                        placeholderImage
+                    }
+                }
+
+            } else {
+                placeholderImage
+            }
+        }
+
+        private var placeholderImage: some View {
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppColors.cardBackground)
+                .overlay {
+                    Image(systemName: "photo")
+                        .font(.largeTitle)
+                }
+        }
+    }

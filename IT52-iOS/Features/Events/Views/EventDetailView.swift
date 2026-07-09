@@ -16,15 +16,11 @@ struct EventDetailView: View{
             
             VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
                 
-                RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
-                    .fill(AppColors.cardBackground)
+                eventImage
                     .frame(height: 220)
-                    .overlay{
-                        
-                        Image(systemName: "photo")
-                            .font(.largeTitle)
-                        
-                    }
+                    .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: AppTheme.cornerRadius))
+                
                 
                 VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
                     
@@ -40,7 +36,7 @@ struct EventDetailView: View{
                     
                     HStack{
                         
-                        Image(systemName: "mapping.and.ellipse")
+                        Image(systemName: "mappin.and.ellipse")
                         
                         Text(event.location)
                         
@@ -57,13 +53,13 @@ struct EventDetailView: View{
                     
                 }
                 
-                Button{
+                /*Button{
                 } label: {
                     
                     Text("Записаться")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent)*/
                 
             }
             .padding()
@@ -71,12 +67,45 @@ struct EventDetailView: View{
         .navigationTitle("События")
         .navigationBarTitleDisplayMode(.inline)
     }
-}
-
-#Preview {
     
-    NavigationStack {
-        
-        EventDetailView(event: MockData.events[0])
+    @ViewBuilder
+        private var eventImage: some View {
+
+            if let imageURL = event.imageURL, let url = URL(string: imageURL) {
+
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+
+                    case .failure:
+                        placeholderImage
+
+                    case .empty:
+                        ZStack {
+                            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                                .fill(AppColors.cardBackground)
+                            ProgressView()
+                        }
+
+                    @unknown default:
+                        placeholderImage
+                    }
+                }
+
+            } else {
+                placeholderImage
+            }
+        }
+
+        private var placeholderImage: some View {
+            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                .fill(AppColors.cardBackground)
+                .overlay {
+                    Image(systemName: "photo")
+                        .font(.largeTitle)
+                }
+        }
     }
-}
