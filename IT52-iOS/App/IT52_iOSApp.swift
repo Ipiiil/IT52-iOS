@@ -13,6 +13,7 @@ struct IT52_iOSApp: App {
     @State private var eventsViewModel = EventsViewModel()
     @State private var attendanceStore = AttendanceStore()
     @State private var appState = AppState()
+    @State private var authViewModel = AuthViewModel()
     
     
     var body: some Scene {
@@ -21,6 +22,7 @@ struct IT52_iOSApp: App {
                 .environment(eventsViewModel)
                 .environment(attendanceStore)
                 .environment(appState)
+                .environment(authViewModel)
         }
     }
 }

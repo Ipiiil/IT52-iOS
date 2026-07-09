@@ -9,10 +9,17 @@ import SwiftUI
 
 struct ProfileView: View {
     
+    @Environment(AuthViewModel.self)
+    private var authViewModel
+    
     var body: some View {
-        
-        Text("Профиль")
-            .navigationTitle("Профиль")
+        NavigationStack{
+            if authViewModel.isAutheticated {
+                UserProfileView()
+            } else {
+                GuestProfileView()
+            }
+        }
     }
 }
 
