@@ -8,12 +8,21 @@ import Foundation
 
 final class EventService {
     
-    private let api = APIAPIClient()
+    private let api = APIClient()
     
-    func loadEvent() async throws -> [EventData]{
+    func loadEvents(page: Int) async throws -> (events: [Event], totalPages: Int) {
         
-        let response = try await api.fetchEvents()
+        let response = try await api.fetchEvents(page: page)
          
-        return response.data
+        let organizedByID = Dictionary(
+            uniqueKeysWithValues: (response.included?.elements ?? []).map {($0.id, $0)}
+        )
+        
+        let events = response.data.map {
+            
+            EventMapper.map($0, organizersByID: organizedByID)
+        }
+        
+        return (events, response.meta?.totalPages ?? page)
     }
 }

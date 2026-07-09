@@ -11,9 +11,11 @@ final class APIClient {
     
     private let baseURL = URL(string: "https://www.it52.info/api/v2")!
     
-    func fetchEvents() async throws -> EventResponse {
+    func fetchEvents(page: Int = 1) async throws -> EventResponse {
         
-        let url = baseURL.appending(path: "events")
+        let url = baseURL
+            .appending(path: "events")
+            .appending(queryItems: [URLQueryItem(name: "page", value: String(page))])
         
         let (data, response) = try await URLSession.shared.data(from: url)
         

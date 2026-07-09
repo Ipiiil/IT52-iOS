@@ -8,14 +8,17 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @Environment(EventsViewModel.self) private var viewModel
+    
     private var upcomingEvents: [Event] {
-        
-        Array(MockData.events.prefix(2))
+        viewModel.events
+            .filter { $0.date >= .now}
+            .sorted {$0.date < $1.date}
+            .prefix(2)
+            .map{$0}
         
     }
     var body: some View {
-                
-        NavigationStack {
             
             ScrollView {
                 
@@ -38,8 +41,28 @@ struct HomeView: View {
                         Text("Ближайшие события")
                             .font(AppFonts.headline)
                         
-                        ForEach(upcomingEvents) { event in EventCard(event: event)}
+                        if viewModel.isLoading && viewModel.events.isEmpty {
+                            
+                            ProgressView()
+                            
+                        } else if upcomingEvents.isEmpty {
+                            
+                            Text("Нет предстоящих событий")
+                                .font(AppFonts.caption)
+                                .foregroundStyle(AppColors.textSecondary)
+                        } else {
+                            
+                            ForEach(upcomingEvents) {event in
+                                NavigationLink {
+                                    EventDetailView(event: event)
+                                } label : {
+                                    EventCard(event: event)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
                     }
+                    
                     //о сообществе
                     VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
                         
@@ -80,10 +103,17 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("IT52")
+            .task{
+                if viewModel.events.isEmpty {
+                    await viewModel.loadEvents()
+                }
+            }
         }
     }
-}
 
 #Preview {
-    HomeView()
+    NavigationStack {
+        HomeView()
+            .environment(EventsViewModel())
+    }
 }
