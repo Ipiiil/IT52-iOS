@@ -76,7 +76,7 @@ struct HomeView: View {
                     }
                     
                     //Контакты
-                    VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
+                    VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
                         
                         SectionHeader(title: "Контакты")
                         
