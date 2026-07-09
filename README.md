@@ -4,7 +4,9 @@
 
 Приложение предоставляет удобный доступ к мероприятиям сообщества, позволяет просматривать информацию о событиях, следить за своим календарем мероприятий и работать с личным профилем.
 
----
+![Swift](https://img.shields.io/badge/Swift-6-orange)
+![iOS](https://img.shields.io/badge/iOS-17+-blue)
+![SwiftUI](https://img.shields.io/badge/SwiftUI-MVVM-green)
 
 ## Цель проекта
 
