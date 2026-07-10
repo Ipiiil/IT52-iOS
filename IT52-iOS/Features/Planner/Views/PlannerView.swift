@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlannerView: View {
     
+    @Environment(AuthViewModel.self) private var authViewModel
     @Environment(EventsViewModel.self) private var eventsViewModel
     @Environment(AttendanceStore.self) private var attendanceStore
     @Environment(AppState.self) private var appState
@@ -35,71 +36,73 @@ struct PlannerView: View {
     
     private var datesWithEvents: Set<String> {
         
-            Set(myEvents.map { EventsPlannerView.dayKey($0.date) })
+            Set(
+                myEvents.map {
+                    EventsPlannerView.dayKey($0.date) })
         }
 
     var body: some View {
             
-            if appState.isAuthorized {
+        NavigationStack {
+            
+            if authViewModel.isAutheticated {
                 
                 ScrollView {
-                
-                VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
                     
-                    EventsPlannerView(
-                        selectedDate: $selectedDate,
-                        datesWithEvents: datesWithEvents
-                    )
-                    .frame(height: 400)
-                    .padding(.top, AppTheme.largeSpacing)
-                    .padding(.bottom, AppTheme.largeSpacing)
+                    VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
                         
-                    
-                    
-                    VStack(alignment: .leading,
-                           spacing: AppTheme.mediumSpacing) {
+                        EventsPlannerView(
+                            selectedDate: $selectedDate,
+                            datesWithEvents: datesWithEvents
+                        )
+                        .frame(height: 400)
+                        .padding(.top, AppTheme.largeSpacing)
+                        .padding(.bottom, AppTheme.largeSpacing)
                         
                         
-                        Text("На \(selectedDate.formatted(date: .long, time: .omitted)) (\(selectedDayEvents.count))")
-                            .font(AppFonts.headline)
                         
-                        if selectedDayEvents.isEmpty {
+                        VStack(alignment: .leading,
+                               spacing: AppTheme.mediumSpacing) {
                             
-                            Text("У вас пока нет мероприятий на этот день")
-                                .font(AppFonts.caption)
-                                .foregroundStyle(
-                                    AppColors.textSecondary
-                                )
                             
-                        } else {
+                            Text("На \(selectedDate.formatted(date: .long, time: .omitted)) (\(selectedDayEvents.count))")
+                                .font(AppFonts.headline)
                             
-                            ForEach(selectedDayEvents) { event in
+                            
+                            if selectedDayEvents.isEmpty {
                                 
-                                NavigationLink {
+                                
+                                Text("У вас пока нет мероприятий на этот день")
+                                    .font(AppFonts.caption)
+                                    .foregroundStyle(
+                                        AppColors.textSecondary
+                                    )
+                                
+                            } else {
+                                
+                                ForEach(selectedDayEvents) { event in
                                     
-                                    EventDetailView(event: event)
-                                } label: {
-                                    
-                                    EventCard(event: event)
+                                    NavigationLink {
+                                        
+                                        EventDetailView(event: event)
+                                    } label: {
+                                        
+                                        EventCard(event: event)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
-                                
                             }
-                            
                         }
-                        
                     }
-                    
+                    .padding()
                     
                 }
-                .padding()
+                .navigationTitle("Календарь")
                 
+            } else {
+                LoginRequiredView()
+                    .navigationTitle("Календарь")
             }
-                .navigationTitle("Календарь")
-            
-        } else {
-            LoginRequiredView()
-                .navigationTitle("Календарь")
         }
     }
 }

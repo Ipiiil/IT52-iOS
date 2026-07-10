@@ -9,15 +9,20 @@ import SwiftUI
 
 struct LoginRequiredView: View {
     
+    @State private var showLogin = false
+    
     var body: some View {
         
         VStack(spacing: AppTheme.largeSpacing) {
             
             Spacer()
             
-            Image(systemName: "person.crop.circle.badge.exclamationark")
-                .font(.system(size: 70))
+            Image(systemName: "calendar.badge.exclamationmark")
+                .font(.system(size: 80))
                 .foregroundStyle(AppColors.accent)
+            
+            Text("Календарь недоступен")
+                .font(AppFonts.title)
             
             VStack(spacing: AppTheme.smallSpacing) {
                 
@@ -27,35 +32,30 @@ struct LoginRequiredView: View {
                 Text("""
                     Для доступа к календарю и личному профилю - небоходимо авторизироваться.
                     """)
-                .font(AppFonts.body)
                 .foregroundStyle(AppColors.textSecondary)
                 .multilineTextAlignment(.center)
-            }
-            
-            VStack (spacing: AppTheme.mediumSpacing) {
                 
-                Button {
+                Button{
                     
+                    showLogin = true
                 } label: {
                     
-                    Label ("Войти через VK", systemImage: "person.badge.key")
+                    Text("Войти")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 
-                Button{
-                    
-                } label: {
-                    Text("Зарегистрироваться")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
+                Spacer()
             }
-            
-            Spacer()
+            .padding()
+            .navigationTitle("Календарь")
+            .sheet(isPresented: $showLogin) {
+                
+                LoginView()
+            }
         }
-        .padding()
     }
+    
 }
 
 #Preview {
