@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct UserProfileView: View {
+    
+    @State private var profile = UserProfile()
     @Environment(AuthViewModel.self)
     private var authViewModel
     
@@ -14,6 +16,10 @@ struct UserProfileView: View {
         
         List {
             Section{
+                
+                ProfileHeaderView()
+                
+                PersonalInfoSection(profile: $profile)
                 Text(authViewModel.currentUser?.name ?? "")
                 
                 Text(authViewModel.currentUser?.email ?? "")
