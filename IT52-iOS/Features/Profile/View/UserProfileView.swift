@@ -20,6 +20,8 @@ struct UserProfileView: View {
                 ProfileHeaderView()
                 
                 PersonalInfoSection(profile: $profile)
+                
+                BioSection(profile: $profile)
                 Text(authViewModel.currentUser?.name ?? "")
                 
                 Text(authViewModel.currentUser?.email ?? "")
