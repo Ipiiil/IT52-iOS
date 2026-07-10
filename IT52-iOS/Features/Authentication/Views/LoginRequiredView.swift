@@ -25,7 +25,7 @@ struct LoginRequiredView: View {
                     .font(AppFonts.title)
                 
                 Text("""
-                    Для доступа к календарю, регистрации на мероприятия и личному профилю - небоходимо авторизироваться.
+                    Для доступа к календарю и личному профилю - небоходимо авторизироваться.
                     """)
                 .font(AppFonts.body)
                 .foregroundStyle(AppColors.textSecondary)
@@ -46,7 +46,7 @@ struct LoginRequiredView: View {
                 Button{
                     
                 } label: {
-                    Text("Зарегестрироваться")
+                    Text("Зарегистрироваться")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)

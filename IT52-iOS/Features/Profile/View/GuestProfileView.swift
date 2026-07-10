@@ -26,7 +26,6 @@ struct GuestProfileView: View {
             Text("""
                 Войдите в аккаунт, чтобы:
                 - пользоваться календарем
-                - записываться на мероприятия
                 - управлять своим профилем
                 """)
             .multilineTextAlignment(.center)

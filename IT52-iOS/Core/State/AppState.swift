@@ -11,5 +11,5 @@ import Observation
 @Observable
 final class AppState {
     
-    var isAuthorized = false
+    var isAuthorized = true
 }
