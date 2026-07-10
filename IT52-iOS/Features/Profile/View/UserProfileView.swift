@@ -10,6 +10,7 @@ struct UserProfileView: View {
     
     @State private var profile = UserProfile()
     @Environment(AuthViewModel.self)
+    
     private var authViewModel
     
     var body: some View {
@@ -18,10 +19,18 @@ struct UserProfileView: View {
             Section{
                 
                 ProfileHeaderView()
+                    .padding()
                 
                 PersonalInfoSection(profile: $profile)
+                    .padding()
                 
                 BioSection(profile: $profile)
+                    .padding()
+                
+                ProfileSettingSection(profile: $profile)
+                    .padding()
+                
+                
                 Text(authViewModel.currentUser?.name ?? "")
                 
                 Text(authViewModel.currentUser?.email ?? "")

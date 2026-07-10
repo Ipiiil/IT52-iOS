@@ -24,7 +24,7 @@ struct PersonalInfoSection: View {
                 
                 TextField("Фамилия", text: $profile.lastName)
                 
-                TextField("Нинейм", text: $profile.nickname)
+                TextField("Никейм", text: $profile.nickname)
                 
                 TextField("Email", text: $profile.email)
                     .keyboardType(.emailAddress)
