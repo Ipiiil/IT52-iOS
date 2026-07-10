@@ -30,6 +30,9 @@ struct UserProfileView: View {
                 ProfileSettingSection(profile: $profile)
                     .padding()
                 
+                InterestsSection(profile: $profile)
+                    .padding()
+                
                 
                 Text(authViewModel.currentUser?.name ?? "")
                 
