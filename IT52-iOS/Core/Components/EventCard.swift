@@ -57,12 +57,23 @@ struct EventCard: View {
                 .font(AppFonts.body)
                 .lineLimit(2)
             
-            Text(event.category)
-                .font(.caption)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(AppColors.accent.opacity(0.15))
-                .clipShape(Capsule())
+            
+            if !event.tagList.isEmpty {
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(event.tagList.sorted(), id: \.self) { tag in
+                            Text(tag)
+                                .font(.caption)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(AppColors.accent.opacity(0.15)
+                                )
+                                .clipShape(Capsule())
+                        }
+                    }
+                }
+            }
             
         }
         .padding()
