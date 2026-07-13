@@ -24,6 +24,25 @@ final class EventsViewModel {
     var errorMessage: String?
     
     var selectedFilter: EventFilter = .all
+    var interests: [String] = []
+    
+    func filteredEvents() -> [Event] {
+        
+        switch selectedFilter {
+        case .all:
+            return events
+            
+        case .interests:
+            
+            guard !interests.isEmpty else {
+                return events
+            }
+            
+            return events.filter { event in
+                !Set(event.tagList).isDisjoint(with: interests)
+            }
+        }
+    }
     
     private let service = EventService()
     private var currentPage = 1

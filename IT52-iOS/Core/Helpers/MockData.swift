@@ -5,7 +5,7 @@
 //  Created by Полина Терехина on 06.07.2026.
 //
 
-import Foundation
+/*import Foundation
 
 enum MockData {
     
@@ -38,3 +38,4 @@ enum MockData {
         ),
     ]
 }
+*/

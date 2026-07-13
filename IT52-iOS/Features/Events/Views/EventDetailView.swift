@@ -56,7 +56,7 @@ struct EventDetailView: View{
                     
                 }
                 
-                if appState.isAuthorized {
+                if appState.isAuthenticated {
                     Button {
                         attendanceStore.toggleAttendance(for: event)
                     } label: {
@@ -130,7 +130,7 @@ struct EventDetailView: View{
         }
     }
 
-#Preview {
+/*#Preview {
     NavigationStack {
         EventDetailView(event: MockData.events[0])
             .environment(AttendanceStore())
@@ -138,3 +138,4 @@ struct EventDetailView: View{
         
     }
 }
+*/

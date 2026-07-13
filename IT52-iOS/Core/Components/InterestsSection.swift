@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct InterestsSection: View {
+    
+    @Environment(AppState.self)
+    private var appState
 
     @Binding var profile: UserProfile
 
@@ -28,7 +31,7 @@ struct InterestsSection: View {
 
                     InterestsChip(
                         title: interest,
-                        isSelected: profile.interests.contains(interest)
+                        isSelected: appState.selectedInterests.contains(interest)
                     ) {
 
                         toggle(interest)
@@ -45,15 +48,17 @@ struct InterestsSection: View {
 
     private func toggle(_ interest: String) {
 
-        if profile.interests.contains(interest) {
+        if appState.selectedInterests.contains(interest) {
 
-            profile.interests.removeAll { $0 == interest }
+            appState.selectedInterests.removeAll { $0 == interest }
 
         } else {
 
-            profile.interests.append(interest)
+            appState.selectedInterests.append(interest)
 
         }
+        
+        profile.interests = appState.selectedInterests
 
     }
 

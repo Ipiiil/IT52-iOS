@@ -28,5 +28,7 @@ struct Event: Identifiable {
     let isFavorite: Bool
     
     let isRegistered: Bool
+    
+    let tagList: [String]
 }
 

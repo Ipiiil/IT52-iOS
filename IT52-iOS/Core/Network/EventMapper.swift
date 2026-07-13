@@ -29,7 +29,8 @@ struct EventMapper {
             category: data.attributes.tagList.first ?? "Без категории",
             imageURL: data.attributes.titleImage?.url,
             isFavorite: false,
-            isRegistered: false
+            isRegistered: false,
+            tagList: data.attributes.tagList
         )
     }
 }

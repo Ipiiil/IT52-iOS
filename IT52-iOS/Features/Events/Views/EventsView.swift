@@ -9,25 +9,55 @@ import SwiftUI
 
 struct EventsView: View {
     
-    @Environment(EventsViewModel.self) private var viewModel
+    @Environment(AppState.self)
+    private var appState
+    
+    @State private var viewModel = EventsViewModel()
     @State private var searchText = ""
     
     
     private var filteredEvents: [Event] {
-        
-        if searchText.isEmpty {
-            
-            return viewModel.events
+
+        var events = viewModel.events
+
+        // Фильтрация по интересам
+        if viewModel.selectedFilter == .interests,
+           !appState.selectedInterests.isEmpty {
+
+            events = events.filter { event in
+                !Set(event.tagList).isDisjoint(with: appState.selectedInterests)
+            }
+
         }
-        
-        return viewModel.events.filter {
-            $0.title.localizedCaseInsensitiveContains(searchText)
+
+        // Поиск
+        if !searchText.isEmpty {
+
+            events = events.filter {
+                $0.title.localizedCaseInsensitiveContains(searchText)
+            }
+
         }
+
+        return events
     }
     
     var body: some View {
             
             ScrollView {
+                
+                Picker("Фильтр", selection: $viewModel.selectedFilter) {
+                    
+                    Text("Все")
+                        .tag(EventFilter.all)
+                    
+                    Text("Мои интересы")
+                        .tag(EventFilter.interests)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.top)
+                
                 
                 LazyVStack(spacing: AppTheme.mediumSpacing) {
 
@@ -52,7 +82,7 @@ struct EventsView: View {
 
                     } else {
 
-                        ForEach(filteredEvents) { event in
+                        ForEach(filteredEvents){ event in
 
                             NavigationLink {
 
