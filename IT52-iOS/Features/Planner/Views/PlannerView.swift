@@ -45,7 +45,7 @@ struct PlannerView: View {
             
         NavigationStack {
             
-            if authViewModel.isAutheticated {
+            if authViewModel.isAuthenticated {
                 
                 ScrollView {
                     

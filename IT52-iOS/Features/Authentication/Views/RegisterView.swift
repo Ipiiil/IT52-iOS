@@ -20,6 +20,10 @@ struct RegisterView: View {
     @State private var password = ""
     @State private var repeatPassword = ""
     
+    private var passwordsMismatch: Bool {
+        !repeatPassword.isEmpty && password != repeatPassword
+    }
+    
     var body: some View {
         
         ScrollView {
@@ -42,6 +46,11 @@ struct RegisterView: View {
                 
                 VStack(spacing: 16) {
                     
+                    TextField("Имя", text: $name)
+                        .padding()
+                        .background(AppColors.cardBackground)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    
                     TextField("Email", text: $email)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.emailAddress)
@@ -54,7 +63,24 @@ struct RegisterView: View {
                         .background(AppColors.cardBackground)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     
+                    SecureField("Повторите пароль", text: $repeatPassword)
+                        .padding()
+                        .background(AppColors.cardBackground)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    
+                    if passwordsMismatch{
+                        Text("Пароли не совпадают")
+                            .font(AppFonts.caption)
+                            .foregroundStyle(.red)
+                    }
+                    
+                    if let error = authViewModel.errorMessage {
+                        Text(error)
+                            .font(AppFonts.caption)
+                            .foregroundStyle(.red)
+                    }
                 }
+                
                 Button {
                     
                     guard password == repeatPassword else {
@@ -67,7 +93,9 @@ struct RegisterView: View {
                             email: email,
                             password: password
                         )
-                        dismiss()
+                        if authViewModel.isAuthenticated{
+                            dismiss()
+                        }
                     }
                 } label: {
                     
@@ -81,6 +109,7 @@ struct RegisterView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(name.isEmpty || email.isEmpty || password.isEmpty || passwordsMismatch)
                 
             }
             .padding()
@@ -91,5 +120,8 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    NavigationStack{
+        RegisterView()
+            .environment(AuthViewModel())
+    }
 }

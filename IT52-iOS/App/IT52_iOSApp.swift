@@ -14,7 +14,7 @@ struct IT52_iOSApp: App {
     @State private var attendanceStore = AttendanceStore()
     @State private var appState = AppState()
     @State private var authViewModel = AuthViewModel()
-    
+  
     
     var body: some Scene {
         WindowGroup {

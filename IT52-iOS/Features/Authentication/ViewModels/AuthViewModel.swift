@@ -7,6 +7,7 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class AuthViewModel{
     var currentUser: User?
@@ -15,7 +16,7 @@ final class AuthViewModel{
     
     var errorMessage: String?
     
-    var isAutheticated: Bool {
+    var isAuthenticated: Bool {
         currentUser != nil
     }
     

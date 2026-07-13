@@ -14,7 +14,7 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack{
-            if authViewModel.isAutheticated {
+            if authViewModel.isAuthenticated {
                 UserProfileView()
             } else {
                 GuestProfileView()
