@@ -14,6 +14,8 @@ final class EventService {
         
         let response = try await api.fetchEvents(page: page)
          
+        //Берем массив организаторов. Создаем словарь [ID: IncludedUser] для быстрого доступа по ID
+        //?? [] — если организаторов нет, берем пустой массив
         let organizedByID = Dictionary(
             uniqueKeysWithValues: (response.included?.elements ?? []).map {($0.id, $0)}
         )

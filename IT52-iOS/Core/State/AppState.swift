@@ -11,5 +11,8 @@ import Observation
 @Observable
 final class AppState {
     
-    var isAuthorized = true
+    var isAuthenticated = false
+    
+    var selectedInterests: [String] = []
+    
 }
