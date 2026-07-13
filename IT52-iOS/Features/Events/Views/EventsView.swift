@@ -25,7 +25,19 @@ struct EventsView: View {
            !appState.selectedInterests.isEmpty {
 
             events = events.filter { event in
-                !Set(event.tagList).isDisjoint(with: appState.selectedInterests)
+                
+                let eventTags = Set(
+                    event.tagList.map {
+                        TagNormalizer.normalize($0)
+                    }
+                )
+                
+                let userTags = Set(
+                    appState.selectedInterests.map{
+                        TagNormalizer.normalize($0)
+                    }
+                )
+                return !eventTags.isDisjoint(with: userTags)
             }
 
         }
