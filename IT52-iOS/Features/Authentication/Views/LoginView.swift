@@ -52,6 +52,12 @@ struct LoginView: View {
                         
                     }
                     
+                    if let error = authViewModel.errorMessage {
+                        Text(error)
+                            .font(AppFonts.caption)
+                            .foregroundStyle(.red)
+                    }
+                    
                     Button{
                         Task {
                             
@@ -59,7 +65,9 @@ struct LoginView: View {
                                 email: email,
                                 password: password
                             )
-                            dismiss()
+                            if authViewModel.isAuthenticated{
+                                dismiss()
+                            }
                         }
                     } label: {
                         if authViewModel.isLoading{
@@ -71,6 +79,7 @@ struct LoginView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent)
+                    .disabled(email.isEmpty || password.isEmpty)
                     
                     NavigationLink("Нет аккаунта? Зарегистрироваться") {
                         
@@ -90,4 +99,5 @@ struct LoginView: View {
 
 #Preview{
     LoginView()
+        .environment(AuthViewModel())
 }

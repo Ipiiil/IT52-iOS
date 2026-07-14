@@ -11,7 +11,7 @@ struct EventDetailView: View{
     let event: Event
     
     @Environment(AttendanceStore.self) private var attendanceStore
-    @Environment(AppState.self) private var appState
+    @Environment(AuthViewModel.self) private var authViewModel
     
     var body: some View {
         
@@ -56,7 +56,7 @@ struct EventDetailView: View{
                     
                 }
                 
-                if appState.isAuthenticated {
+                if authViewModel.isAuthenticated {
                     Button {
                         attendanceStore.toggleAttendance(for: event)
                     } label: {

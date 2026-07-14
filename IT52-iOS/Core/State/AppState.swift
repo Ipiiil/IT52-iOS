@@ -2,17 +2,15 @@
 //  AppState.swift
 //  IT52-iOS
 //
-//  Created by Полина Терехина on 07.07.2026.
+//  Created by Полина Терехина on 14.07.2026.
 //
-
-import Foundation
+// теперь только под интересы
+ import Foundation
 import Observation
 
 @Observable
-final class AppState {
-    
-    var isAuthenticated = false
+
+final class AppState{
     
     var selectedInterests: [String] = []
-    
 }

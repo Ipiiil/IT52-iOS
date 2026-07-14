@@ -12,7 +12,6 @@ struct PlannerView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(EventsViewModel.self) private var eventsViewModel
     @Environment(AttendanceStore.self) private var attendanceStore
-    @Environment(AppState.self) private var appState
     @State private var selectedDate = Date()
     
     //все мероприятия отмеченные "иду"
@@ -113,7 +112,7 @@ struct PlannerView: View {
         PlannerView ()
             .environment(EventsViewModel())
             .environment(AttendanceStore())
-            .environment(AppState())
+            .environment(AuthViewModel())
         }
     }
 

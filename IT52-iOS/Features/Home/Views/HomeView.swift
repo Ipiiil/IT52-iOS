@@ -80,7 +80,7 @@ struct HomeView: View {
                         
                         SectionHeader(title: "Контакты")
                         
-                        Link(destination: URL(string: "https://it52.info/")!){
+                        Link(destination: URL(string: "https://it52.info")!){
                             Label("it52.info", systemImage: "globe")
                         }
                         

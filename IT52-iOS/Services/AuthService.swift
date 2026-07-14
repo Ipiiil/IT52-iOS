@@ -56,9 +56,14 @@ final class AuthService {
     }
 
     private func formEncode(_ params: [String: String]) -> Data {
-        params
+        var allowedCharacters = CharacterSet.alphanumerics
+        allowedCharacters.insert(charactersIn: "-._~")
+
+        return params
             .map { key, value in
-                "\(key)=\(value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+                let encodedKey = key.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? key
+                let encodedValue = value.addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? value
+                return "\(encodedKey)=\(encodedValue)"
             }
             .joined(separator: "&")
             .data(using: .utf8) ?? Data()
