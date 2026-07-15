@@ -13,4 +13,6 @@ import Observation
 final class AppState{
     
     var selectedInterests: [String] = []
+    
+    var selectedInterestsIDs: [Int] = []
 }

@@ -21,25 +21,36 @@ struct EventsView: View {
         var events = viewModel.events
 
         // Фильтрация по интересам
-        if viewModel.selectedFilter == .interests,
-           !appState.selectedInterests.isEmpty {
+        if viewModel.selectedFilter == .interests {
+            
+            let selectedIDs = Set(appState.selectedInterestsIDs)
+            
+            if !selectedIDs.isEmpty {
+                
+                /*events = events.filter { event in
+                    
+                    let eventIDs = Set(
+                        event.tagList.compactMap {
+                            Interests.id(for: $0)
+                        }
+                    )
 
-            events = events.filter { event in
+                    return !eventIDs.isDisjoint(with: selectedIDs)
+                }*/
                 
-                let eventTags = Set(
-                    event.tagList.map {
-                        TagNormalizer.normalize($0)
-                    }
-                )
+                events = events.filter { event in
+
+                    let eventIDs = Set(
+                        event.tagList.compactMap {
+                            Interests.idForEventTag($0)
+                        }
+                    )
+
+
+                    return !eventIDs.isDisjoint(with: selectedIDs)
+                }
                 
-                let userTags = Set(
-                    appState.selectedInterests.map{
-                        TagNormalizer.normalize($0)
-                    }
-                )
-                return !eventTags.isDisjoint(with: userTags)
             }
-
         }
 
         // Поиск

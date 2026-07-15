@@ -38,6 +38,10 @@ final class ProfileService {
         profile.isPrivate = WebFormHelper.extractCheckboxChecked(name: "user[hidden]", from: html)
         profile.notificationsEnabled = WebFormHelper.extractCheckboxChecked(name: "user[subscription]", from: html)
         profile.interestedCategoryIDs = WebFormHelper.extractSelectedCategoryIDs(from: html)
+        if let url = WebFormHelper.extractAvatarURL(from: html) {
+            profile.avatarURL = url + "?t=\(Date().timeIntervalSince1970)"
+        }
+        print("AVATAR URL:", profile.avatarURL ?? "nil")
         return profile
     }
     
@@ -45,7 +49,8 @@ final class ProfileService {
     func updateProfile(_ profile: UserProfile, avatarImageData: Data?) async throws {
         
         let editPageURL = baseURL.appendingPathComponent("my/profile/edit")
-        let csrfToken = try await WebFormHelper.fetchCSRFToken(from: editPageURL)
+        let (pageData, _) = try await session.data(from: editPageURL)
+        let csrfToken = try WebFormHelper.extractCSRFToken(from: pageData)
         
         let boundary = "Boundary-\(UUID().uuidString)"
         
@@ -59,12 +64,16 @@ final class ProfileService {
             ("user[website]", profile.website),
             ("user[bio]", profile.bio),
             ("user[hidden]", profile.isPrivate ? "1" : "0"),
-            ("user[subscription]", profile.notificationsEnabled ? "1" : "0"),
-            ("user[avatar_image_cache]", "")
+            ("user[subscription]", profile.notificationsEnabled ? "1" : "0")
         ]
         
-        for id in profile.interestedCategoryIDs {
-            fields.append(("user[interested_category_ids][]", "\(id)"))
+        if profile.interestedCategoryIDs.isEmpty{
+            fields.append(("user[interested_category_ids][]", ""))
+        } else {
+            
+            for id in profile.interestedCategoryIDs {
+                fields.append(("user[interested_category_ids][]", String(id)))
+            }
         }
         
         
@@ -72,7 +81,7 @@ final class ProfileService {
             fields: fields,
             fileField: avatarImageData != nil ? "user[avatar_image]" : nil,
             fileData: avatarImageData,
-            fileName: "avatar.jpg",
+            fileName: "avatar_\(UUID().uuidString).jpg",
             mimeType: "image/jpeg",
             boundary: boundary
         )
@@ -87,25 +96,15 @@ final class ProfileService {
             throw AuthError.unexpectedResponse
         }
         
-        print("PROFILE SAVE STATUS:", httpResponse.statusCode)
-        
         switch httpResponse.statusCode {
         case 302:
             // успех — Rails обновил профиль и редиректит на /my/profile
             return
         case 200:
-            /*
-            let errorDetail = extractFlashError(from: data) ?? "неизвестная причина"
-            print("DEBUG: сохранение профиля не удалось — \(errorDetail)")
-            throw AuthError.unexpectedResponse*/
-            let html = String(data: data, encoding: .utf8) ?? ""
-            print("===== SERVER RESPONSE =====")
-            print(html.prefix(5000))
-            print("===========================")
-
             let errorDetail = extractFlashError(from: data) ?? "неизвестная причина"
             print("DEBUG: сохранение профиля не удалось — \(errorDetail)")
             throw AuthError.unexpectedResponse
+
         default:
             throw AuthError.unexpectedResponse
         }

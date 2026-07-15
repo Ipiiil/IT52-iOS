@@ -8,6 +8,9 @@ import SwiftUI
 import PhotosUI
 
 struct UserProfileView: View {
+    
+    @Environment(AppState.self)
+    private var appState
 
     @State private var profile = UserProfile()
     @State private var isLoading = false
@@ -84,7 +87,12 @@ struct UserProfileView: View {
         .onChange(of: selectedPhotoItem) { _, newItem in
             Task {
                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                    selectedPhotoData = data
+
+                    if data.count <= 800 * 1024 {
+                        selectedPhotoData = data
+                    } else {
+                        errorMessage = "Размер фото не должен превышать 800 КБ"
+                    }
                 }
             }
         }
@@ -95,6 +103,13 @@ struct UserProfileView: View {
         errorMessage = nil
         do {
             profile = try await profileService.fetchProfile()
+            
+            appState.selectedInterestsIDs = profile.interestedCategoryIDs
+            
+            appState.selectedInterests = Interests.names(
+                for: profile.interestedCategoryIDs
+            )
+            
         } catch {
             errorMessage = "Не удалось загрузить профиль"
         }
@@ -107,6 +122,7 @@ struct UserProfileView: View {
         do {
             try await profileService.updateProfile(profile, avatarImageData: selectedPhotoData)
             selectedPhotoData = nil
+            profile = try await profileService.fetchProfile()
         } catch {
             errorMessage = "Не удалось сохранить изменения"
         }

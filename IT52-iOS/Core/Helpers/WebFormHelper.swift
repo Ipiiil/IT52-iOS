@@ -110,8 +110,8 @@ enum WebFormHelper {
             return false
         }
         return html[range].contains("checked")
-            
-        }
+        
+    }
     
     static func extractTextareaValue(name: String, from html: String) -> String?{
         let escapedName = NSRegularExpression.escapedPattern(for: name)
@@ -126,19 +126,48 @@ enum WebFormHelper {
     }
     
     static func extractSelectedCategoryIDs(from html: String) -> [Int] {
-        let pattern = #"<input[^>]*type="checkbox"[^>]*name="user\[interested_category_ids\]\[\]"[^>]*value="(\d+)"[^>]*checked[^>]*>"#
 
-        guard let regex = try? NSRegularExpression(pattern: pattern) else {
+        let pattern =
+        #"name="user\[interested_category_ids\]\[\]"[^>]*value="(\d+)"[^>]*checked|checked[^>]*name="user\[interested_category_ids\]\[\]"[^>]*value="(\d+)"#
+
+        guard let regex = try? NSRegularExpression(pattern: pattern)
+        else {
             return []
         }
 
-        let matches = regex.matches(in: html, range: NSRange(html.startIndex..., in: html))
+        let matches = regex.matches(
+            in: html,
+            range: NSRange(html.startIndex..., in: html)
+        )
 
         return matches.compactMap { match in
-            guard let range = Range(match.range(at: 1), in: html) else {
-                return nil
+
+            for index in 1...2 {
+
+                if let range = Range(match.range(at: index), in: html),
+                   let id = Int(html[range]) {
+                    return id
+                }
             }
-            return Int(html[range])
+
+            return nil
         }
+    }
+    
+    static func extractAvatarURL(from html: String) -> String? {
+
+        let pattern = #"src="([^"]+square_150[^"]+)""#
+
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(
+                in: html,
+                range: NSRange(html.startIndex..., in: html)
+              ),
+              let range = Range(match.range(at: 1), in: html)
+        else {
+            return nil
+        }
+
+        return String(html[range])
     }
 }

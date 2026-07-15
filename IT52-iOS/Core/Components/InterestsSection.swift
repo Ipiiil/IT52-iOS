@@ -31,8 +31,8 @@ struct InterestsSection: View {
 
                     InterestsChip(
                         title: interest,
-                        isSelected: appState.selectedInterests.contains(
-                            TagNormalizer.normalize(interest)
+                        isSelected: profile.interestedCategoryIDs.contains(
+                            Interests.id(for: interest) ?? -1
                         )
                     ) {
 
@@ -49,21 +49,20 @@ struct InterestsSection: View {
     }
 
     private func toggle(_ interest: String) {
-        
-        let normalizedInterest = TagNormalizer.normalize(interest)
 
-        if appState.selectedInterests.contains(normalizedInterest) {
+        guard let id = Interests.id(for: interest) else {
+            return
+        }
 
-            appState.selectedInterests.removeAll { $0 == normalizedInterest }
+        if profile.interestedCategoryIDs.contains(id) {
+
+            profile.interestedCategoryIDs.removeAll { $0 == id }
 
         } else {
 
-            appState.selectedInterests.append(normalizedInterest)
+            profile.interestedCategoryIDs.append(id)
 
         }
-        
-        profile.interests = appState.selectedInterests
-
     }
 
 }

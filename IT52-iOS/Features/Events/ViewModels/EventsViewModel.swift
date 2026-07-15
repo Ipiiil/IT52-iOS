@@ -24,7 +24,7 @@ final class EventsViewModel {
     var errorMessage: String?
     
     var selectedFilter: EventFilter = .all
-    var interests: [String] = []
+    /*var interests: [String] = []
     
     func filteredEvents() -> [Event] {
         
@@ -42,7 +42,7 @@ final class EventsViewModel {
                 !Set(event.tagList).isDisjoint(with: interests)
             }
         }
-    }
+    }*/
     
     private let service = EventService()
     private var currentPage = 1
