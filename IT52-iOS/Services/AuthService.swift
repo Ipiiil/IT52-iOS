@@ -33,9 +33,11 @@ final class AuthService {
     private let baseURL = URL(string: "https://it52.info")!
     private let redirectDelegate = NoRedirectDelegate()
 
-    private lazy var session: URLSession = {
+    
+    private let session = NetworkSession.shared
+    /*private lazy var session: URLSession = {
         URLSession(configuration: .default, delegate: redirectDelegate, delegateQueue: nil)
-    }()
+    }()*/
 
     private func fetchCSRFToken(path: String) async throws -> String {
         let url = baseURL.appendingPathComponent(path)
@@ -138,7 +140,7 @@ final class AuthService {
     }
 }
 
-private final class NoRedirectDelegate: NSObject, URLSessionTaskDelegate {
+ final class NoRedirectDelegate: NSObject, URLSessionTaskDelegate {
     func urlSession(
         _ session: URLSession,
         task: URLSessionTask,

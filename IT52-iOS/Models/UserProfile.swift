@@ -30,4 +30,6 @@ struct UserProfile {
     var notificationsEnabled: Bool = true
     
     var interests: [String] = []
+    
+    var interestedCategoryIDs: [Int] = []
 }
