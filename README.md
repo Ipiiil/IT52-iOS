@@ -10,6 +10,18 @@
 
 ---
 
+
+## Скриншоты
+
+<p align="center">
+  <img src="https://github.com/Ipiiil/IT52-iOS/blob/master/screenshots/home.PNG?raw=true" width="200" alt="Главная" style="margin: 0 10px;" >
+  <img src="https://github.com/Ipiiil/IT52-iOS/blob/master/screenshots/planner.PNG?raw=true" width="200" alt="Планы" style="margin: 0 10px;">
+ <img src="https://github.com/Ipiiil/IT52-iOS/blob/master/screenshots/profile.PNG?raw=true" width="200" alt="События" style="margin: 0 10px;">
+ <img src="https://github.com/Ipiiil/IT52-iOS/blob/master/screenshots/events.PNG?raw=true" width="200" alt="Профиль" style="margin: 0 10px;">
+</p>
+
+---
+
 ## Установка и запуск
 **1. Клонируйте репозиторий**
 ``` bash
