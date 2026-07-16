@@ -20,9 +20,13 @@ struct EventDetailView: View{
             VStack(alignment: .leading, spacing: AppTheme.largeSpacing) {
                 
                 eventImage
-                    .frame(height: 220)
                     .frame(maxWidth: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: AppTheme.cornerRadius))
+                    .frame(height: 220)
+                    .clipShape(
+                        RoundedRectangle(
+                            cornerRadius: AppTheme.cornerRadius
+                        )
+                    )
                 
                 
                 VStack(alignment: .leading, spacing: AppTheme.mediumSpacing) {
@@ -53,6 +57,8 @@ struct EventDetailView: View{
                     }
                     
                     Text(event.description)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineLimit(nil)
                     
                 }
                 
@@ -82,6 +88,7 @@ struct EventDetailView: View{
                 .buttonStyle(.borderedProminent)*/
                 
             }
+            .frame(maxWidth: UIScreen.main.bounds.width)
             .padding()
         }
         .navigationTitle("События")
@@ -89,36 +96,50 @@ struct EventDetailView: View{
     }
     
     @ViewBuilder
-        private var eventImage: some View {
+    private var eventImage: some View {
 
-            if let imageURL = event.imageURL, let url = URL(string: imageURL) {
+        if let imageURL = event.imageURL,
+           let url = URL(string: imageURL) {
 
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
+            AsyncImage(url: url) { phase in
+                
+                switch phase {
 
-                    case .failure:
-                        placeholderImage
+                case .success(let image):
 
-                    case .empty:
-                        ZStack {
-                            RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
-                                .fill(AppColors.cardBackground)
-                            ProgressView()
-                        }
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: UIScreen.main.bounds.width - 32,
+                            height: 220
+                        )
+                        .clipped()
 
-                    @unknown default:
-                        placeholderImage
+                case .failure:
+
+                    placeholderImage
+
+                case .empty:
+
+                    ZStack {
+                        RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
+                            .fill(AppColors.cardBackground)
+
+                        ProgressView()
                     }
-                }
+                    .frame(height: 220)
 
-            } else {
-                placeholderImage
+                @unknown default:
+
+                    placeholderImage
+                }
             }
+
+        } else {
+            placeholderImage
         }
+    }
 
         private var placeholderImage: some View {
             RoundedRectangle(cornerRadius: AppTheme.cornerRadius)
