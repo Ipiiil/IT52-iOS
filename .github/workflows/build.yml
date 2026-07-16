@@ -1,0 +1,44 @@
+name: Build iOS App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+
+      - name: Build project
+        run: |
+          xcodebuild build \
+            -project IT52-iOS.xcodeproj \
+            -scheme IT52-iOS \
+            -destination 'generic/platform=iOS' \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Create Payload folder
+        run: |
+          mkdir Payload
+          cp -R "build/Release-iphoneos/IT52-iOS.app" Payload/
+
+      - name: Create IPA
+        run: zip -r IT52-iOS.ipa Payload
+
+      - name: Upload IPA as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: IT52-iOS
+          path: IT52-iOS.ipa
