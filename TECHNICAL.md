@@ -380,5 +380,5 @@ IT52-iOS/
 ## 14. Контакты
 
 По вопросам, связанным с проектом:
-- GitHub: [Ipiiii](https://github.com/Ipiiil)
+- GitHub: [Ipiiil](https://github.com/Ipiiil)
 - Проект: [IT52-iOS](https://github.com/Ipiiil/IT52-iOS)
