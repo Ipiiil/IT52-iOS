@@ -22,6 +22,14 @@ final class AuthViewModel{
     
     private let service = AuthService()
     
+    //восстановление сессии
+    init() {
+        if let data = UserDefaults.standard.data(forKey: "currentUser"),
+           let user = try? JSONDecoder().decode(User.self, from: data) {
+            currentUser = user
+        }
+    }
+    
     func login(email: String,
                password: String) async {
         
@@ -31,6 +39,11 @@ final class AuthViewModel{
                 email:email,
                 password: password
             )
+            
+            if let currentUser {
+                let data = try JSONEncoder().encode(currentUser)
+                UserDefaults.standard.set(data, forKey: "currentUser")
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -48,6 +61,11 @@ final class AuthViewModel{
                 email: email,
                 password: password
             )
+            
+            if let currentUser{
+                let data = try JSONEncoder().encode(currentUser)
+                UserDefaults.standard.set(data, forKey: "currentUser")
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -56,6 +74,10 @@ final class AuthViewModel{
     }
     
     func logout() {
+
         currentUser = nil
+
+        UserDefaults.standard.removeObject(forKey: "currentUser")
+        service.logout()
     }
 }
