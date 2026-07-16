@@ -27,16 +27,26 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Find and copy .app
+      - name: Find and verify .app
         run: |
-          find DerivedData -name "*.app" -exec cp -R {} Payload/ \;
+          APP_PATH=$(find DerivedData -name "*.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "❌ .app not found!"
+            exit 1
+          fi
+          echo "✅ Found .app at: $APP_PATH"
+          echo "APP_PATH=$APP_PATH" >> $GITHUB_ENV
 
       - name: Create Payload folder
-        run: mkdir -p Payload
+        run: |
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          ls -la Payload/
 
       - name: Create IPA
         run: |
           zip -r IT52-iOS.ipa Payload
+          ls -la IT52-iOS.ipa
 
       - name: Upload IPA as artifact
         uses: actions/upload-artifact@v4
