@@ -38,7 +38,7 @@ struct EventDetailView: View{
                         
                         Image(systemName: "calendar")
                         
-                        Text(event.date.formatted(date: .long, time: .shortened))
+                        Text(DateFormatter.ruLong.string(from: event.date))
                     }
                     
                     HStack{
@@ -149,7 +149,26 @@ struct EventDetailView: View{
                         .font(.largeTitle)
                 }
         }
-    }
+    
+}
+
+extension DateFormatter {
+    static let ruShort: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
+    static let ruLong: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .full
+        formatter.timeStyle = .short
+        return formatter
+    }()
+}
 
 /*#Preview {
     NavigationStack {

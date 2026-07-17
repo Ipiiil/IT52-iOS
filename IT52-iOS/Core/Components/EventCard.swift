@@ -32,8 +32,7 @@ struct EventCard: View {
                 
                 Image(systemName: "calendar")
                 
-                Text(event.date.formatted(date: .abbreviated,
-                                          time: .omitted))
+                Text(DateFormatter.ruShort.string(from: event.date))
             }
             .font(AppFonts.caption)
             
