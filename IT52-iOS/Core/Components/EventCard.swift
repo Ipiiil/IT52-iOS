@@ -16,7 +16,7 @@ struct EventCard: View {
             
             HStack(alignment: .top) {
                 
-                Text(event.title)
+                Text(EventTextCleaner.clean(event.title))
                     .font(AppFonts.headline)
                 
                 Spacer ()

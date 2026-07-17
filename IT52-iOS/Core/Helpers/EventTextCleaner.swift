@@ -42,11 +42,16 @@ enum EventTextCleaner {
 
     private static func removeEmoji(_ text: String) -> String {
 
-        text.filter { character in
-            !character.unicodeScalars.contains { scalar in
-
-                scalar.properties.isEmoji
+        text
+            .components(separatedBy: .newlines)
+            .map { line in
+                line.filter { character in
+                    !character.unicodeScalars.contains { scalar in
+                        scalar.properties.isEmojiPresentation ||
+                        scalar.properties.isEmoji
+                    }
+                }
             }
-        }
+            .joined(separator: "\n")
     }
 }
