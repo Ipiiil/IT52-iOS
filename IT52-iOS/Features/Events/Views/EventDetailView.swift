@@ -5,6 +5,7 @@
 //  Created by Полина Терехина on 07.07.2026.
 //
 import SwiftUI
+import EventKit
 
 struct EventDetailView: View{
     
@@ -82,6 +83,20 @@ struct EventDetailView: View{
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(attendanceStore.isAttending(event) ? .green : AppColors.accent)
+                    
+                    if attendanceStore.isAttending(event) {
+                                                Button {
+                                                    Task {
+                                                        await saveEventToCalendar()
+                                                    }
+                                                } label: {
+                                                    Label("Сохранить в календарь", systemImage: "calendar.badge.plus")
+                                                        .frame(maxWidth: .infinity)
+                                                }
+                                                .buttonStyle(.bordered)
+                                                .tint(AppColors.accent)
+                                            }
+                    
                 } else {
                     Text("Войдите, чтобы отмечать события")
                         .font(AppFonts.caption)
@@ -157,6 +172,37 @@ struct EventDetailView: View{
                         .font(.largeTitle)
                 }
         }
+    
+    // Calendar
+        
+        private func saveEventToCalendar() async {
+            do {
+                try await CalendarService.shared.addEventToCalendar(from: event)
+                 showAlert(title: "Готово!", message: "Мероприятие добавлено в ваш календарь ")
+            } catch CalendarError.accessDenied {
+                 showAlert(
+                    title: "Нет доступа",
+                    message: "Разрешите доступ к календарю в настройках iPhone."
+                )
+            } catch {
+                showAlert(
+                    title: "Ошибка",
+                    message: "Не удалось сохранить событие: \(error.localizedDescription)"
+                )
+            }
+        }
+    
+    @MainActor
+        private func showAlert(title: String, message: String) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootVC = windowScene.windows.first?.rootViewController {
+                rootVC.present(alert, animated: true)
+            }
+        }
+    
     
 }
 

@@ -19,5 +19,7 @@
 		<string>yandexmaps</string>
 		<string>comgooglemaps</string>
 	</array>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Чтобы сохранять мероприятия, на которые вы идете, в ваш календарь</string>
 </dict>
 </plist>
