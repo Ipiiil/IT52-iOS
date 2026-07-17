@@ -53,9 +53,8 @@ struct EventCard: View {
             }
             .font(AppFonts.caption)
             
-            Text(event.description)
+            Text(EventTextCleaner.shortDescription(event.description))
                 .font(AppFonts.body)
-                .lineLimit(2)
             
             
             if !event.tagList.isEmpty {
