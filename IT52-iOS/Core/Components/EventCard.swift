@@ -36,13 +36,16 @@ struct EventCard: View {
             }
             .font(AppFonts.caption)
             
-            HStack {
+            if !event.location.isEmpty {
                 
-                Image(systemName: "mappin.and.ellipse")
-                
-                Text(event.location)
+                HStack {
+                    
+                    Image(systemName: isOnlineLocation(event.location) ? "person.crop.square.badge.video" : "mappin.and.ellipse")
+                    
+                    Text(event.location)
+                        .font(AppFonts.caption)
+                }
             }
-            .font(AppFonts.caption)
             
             HStack {
                 
@@ -120,4 +123,10 @@ struct EventCard: View {
                         .font(.largeTitle)
                 }
         }
+    
+    //для иконки онлайна
+    private func isOnlineLocation(_ location: String) -> Bool {
+        let lowercased = location.lowercased()
+        return lowercased.contains("онлайн") || lowercased.contains("online")
+    }
     }

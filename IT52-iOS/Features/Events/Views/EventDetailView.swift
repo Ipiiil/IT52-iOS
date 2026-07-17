@@ -42,20 +42,27 @@ struct EventDetailView: View{
                         Text(DateFormatter.ruLong.string(from: event.date))
                     }
                     
-                    HStack{
+                    if !event.location.isEmpty{
                         
-                        Image(systemName: "mappin.and.ellipse")
-                        if let url = makeMapsURL(for: event.location) {
-                            Link(destination: url) {
+                        HStack{
+                            
+                            Image(systemName: isOnlineLocation(event.location) ? "person.crop.square.badge.video" : "mappin.and.ellipse")
+                            
+                            if isOnlineLocation(event.location) {
                                 Text(event.location)
-                                    .foregroundStyle(AppColors.accent)
-                                    .underline()
+                            } else {
+                                if let url = makeMapsURL(for: event.location) {
+                                    Link(destination: url) {
+                                        Text(event.location)
+                                            .foregroundStyle(AppColors.accent)
+                                            .underline()
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Text(event.location)
+                                }
                             }
-                            .buttonStyle(.plain)
-                        } else {
-                            Text(event.location)
                         }
-                        
                     }
                     
                     HStack{
@@ -204,6 +211,13 @@ struct EventDetailView: View{
         }
     
     
+    //для онлайна
+    private func isOnlineLocation(_ location: String) -> Bool {
+        let lowercased = location.lowercased()
+        return lowercased.contains("онлайн") || lowercased.contains("online")
+    }
+    
+    
 }
 
 extension DateFormatter {
@@ -243,7 +257,12 @@ extension DateFormatter {
         
         //яблочные карты
         return URL(string: "https://maps.apple.com/?q=\(encodedAddress)")
+        
+        
+        
 }
+
+
 
 
 /*#Preview {
