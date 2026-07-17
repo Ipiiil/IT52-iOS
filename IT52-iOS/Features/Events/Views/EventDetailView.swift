@@ -44,8 +44,16 @@ struct EventDetailView: View{
                     HStack{
                         
                         Image(systemName: "mappin.and.ellipse")
-                        
-                        Text(event.location)
+                        if let url = makeMapsURL(for: event.location) {
+                            Link(destination: url) {
+                                Text(event.location)
+                                    .foregroundStyle(AppColors.accent)
+                                    .underline()
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Text(event.location)
+                        }
                         
                     }
                     
@@ -169,6 +177,28 @@ extension DateFormatter {
         return formatter
     }()
 }
+    
+    //MARK: Maps Helper
+    
+    private func makeMapsURL(for address: String) -> URL? {
+        let encodedAddress = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? address
+        
+        //яндекс карты
+        let yandexMapsURL = URL(string: "yandexmaps://maps.yandex.ru/?text=\(encodedAddress)")
+            if let yandexMapsURL = yandexMapsURL, UIApplication.shared.canOpenURL(yandexMapsURL) {
+                return yandexMapsURL
+            }
+        
+        //гугл мапс
+        let googleMapsURL = URL(string: "comgooglemaps://?q=\(encodedAddress)")
+            if let googleMapsURL = googleMapsURL, UIApplication.shared.canOpenURL(googleMapsURL) {
+                return googleMapsURL
+            }
+        
+        //яблочные карты
+        return URL(string: "https://maps.apple.com/?q=\(encodedAddress)")
+}
+
 
 /*#Preview {
     NavigationStack {
